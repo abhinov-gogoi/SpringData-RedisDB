@@ -3,11 +3,14 @@ package com.learning.controller;
 import com.learning.entity.Product;
 import com.learning.repository.ProductDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
 @RequestMapping("/product")
+@EnableCaching
 public class MainController {
 
     @Autowired
@@ -29,6 +32,7 @@ public class MainController {
     }
 
     @GetMapping("/{id}")
+    @Cacheable(key = "#id", value = "Product")
     public Product findProductById(@PathVariable int id) {
         return dao.findProductById(id);
     }
